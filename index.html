@@ -178,6 +178,7 @@
     }
 
     function inicializarGrafico() {
+        if (miGrafico) return;
         const ctx = document.getElementById('graficoVotos').getContext('2d');
         miGrafico = new Chart(ctx, {
             type: 'bar',
@@ -203,7 +204,8 @@
     }
 
     function cargarResultados() {
-        fetch(URL_SCRIPT)
+        // Usamos redirect: 'follow' para evitar el bloqueo del fetch con Google Apps Script
+        fetch(URL_SCRIPT, { redirect: 'follow' })
             .then(res => res.json())
             .then(data => {
                 let totales = [0, 0, 0, 0, 0, 0, 0];
@@ -227,7 +229,7 @@
                 }
             })
             .catch(e => {
-                console.log("Cargando gráfico...");
+                console.log("Error al cargar datos:", e);
             });
     }
 </script>
