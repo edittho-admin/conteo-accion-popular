@@ -3,219 +3,157 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acción Popular - Conteo Rápido</title>
-    <!-- Cargamos Chart.js para los gráficos -->
+    <title>Sistema de Conteo Rápido - Acción Popular</title>
+    <!-- Chart.js para las gráficas -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        body { font-family: Arial, sans-serif; background: #f4f6f9; margin: 0; padding: 15px; color: #333; }
-        .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h2, h3 { color: #d9534f; text-align: center; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 14px; }
-        input { width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; }
-        button { background: #d9534f; color: white; border: none; padding: 12px; width: 100%; font-size: 16px; border-radius: 5px; cursor: pointer; font-weight: bold; }
-        button:hover { background: #c9302c; }
-        .secondary-btn { background: #6c757d; margin-top: 10px; }
-        .secondary-btn:hover { background: #5a6268; }
-        .party-section { background: #fff3f3; padding: 12px; border-radius: 5px; margin-bottom: 10px; border-left: 5px solid #d9534f; }
-        .hidden { display: none; }
-        .alert { color: red; text-align: center; margin-top: 10px; }
-        .nav-tabs { display: flex; justify-content: space-around; margin-bottom: 20px; border-bottom: 2px solid #ddd; padding-bottom: 10px; }
-        .tab-link { background: none; border: none; font-size: 16px; font-weight: bold; cursor: pointer; color: #666; padding: 5px 10px; }
-        .tab-link.active { color: #d9534f; border-bottom: 3px solid #d9534f; }
-        .stats-card { background: #f8f9fa; padding: 15px; border-radius: 8px; text-align: center; margin-bottom: 15px; border: 1px solid #e9ecef; }
-        .stats-number { font-size: 28px; font-weight: bold; color: #28a745; }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 450px;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #d9534f;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        p.sub {
+            text-align: center;
+            color: #555;
+            font-size: 14px;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        .nav-tabs {
+            display: flex;
+            justify-content: space-around;
+            border-bottom: 2px solid #ddd;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+        }
+        .nav-tabs a {
+            text-decoration: none;
+            color: #d9534f;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .nav-tabs a.active {
+            border-bottom: 3px solid #d9534f;
+            padding-bottom: 7px;
+        }
+        .card-mesas {
+            background: #fdfdfd;
+            border: 1px solid #e1e4e8;
+            border-radius: 6px;
+            text-align: center;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .card-mesas span {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+        }
+        .card-mesas h3 {
+            margin: 5px 0 0 0;
+            font-size: 28px;
+            color: #28a745;
+        }
+        .btn-actualizar {
+            width: 100%;
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+        .btn-actualizar:hover {
+            background-color: #5a6268;
+        }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>ACCIÓN POPULAR</h2>
-    <p style="text-align: center; color: #666; margin-top:0;">Sistema de Conteo Rápido - Municipal</p>
+    <div class="container">
+        <h2>ACCIÓN POPULAR</h2>
+        <p class="sub">Sistema de Conteo Rápido - Municipal</p>
 
-    <!-- Pantalla de Login General -->
-    <div id="login-screen">
-        <div class="form-group">
-            <label>Clave de Acceso:</label>
-            <input type="password" id="clave-ingreso" placeholder="Ingresa la clave secreta">
-        </div>
-        <button onclick="verificarClave()">Ingresar al Sistema</button>
-        <p id="error-msg" class="alert"></p>
-    </div>
-
-    <!-- Panel Principal -->
-    <div id="main-panel" class="hidden">
-        
-        <!-- Pestañas de Navegación -->
         <div class="nav-tabs">
-            <button class="tab-link active" onclick="cambiarTab('registrar')">📝 Registrar Mesa</button>
-            <button class="tab-link" onclick="cambiarTab('resultados')">📊 Ver Resultados y Gráfico</button>
+            <a href="registrar.html">📝 Registrar Mesa</a>
+            <a href="#" class="active">📊 Ver Resultados y Gráfico</a>
         </div>
 
-        <!-- SECCIÓN 1: REGISTRAR MESA -->
-        <div id="tab-registrar">
-            <form id="votos-form" onsubmit="enviarDatos(event)">
-                <div class="form-group">
-                    <label>Número de Mesa de Votación:</label>
-                    <input type="text" id="mesa" required placeholder="Ej. 012345">
-                </div>
-                <div class="form-group">
-                    <label>Nombre del Personero:</label>
-                    <input type="text" id="personero" required placeholder="Tus nombres y apellidos">
-                </div>
-
-                <h3 style="margin-top:20px;">Votos por Partido</h3>
-                
-                <div class="form-group"><label>Alianza para el Progreso:</label><input type="number" class="voto-input" id="alianza" value="0" min="0" required></div>
-                <div class="form-group"><label>Juntos por el Perú:</label><input type="number" class="voto-input" id="juntos" value="0" min="0" required></div>
-                
-                <div class="party-section">
-                    <div class="form-group"><label>⭐ ACCIÓN POPULAR:</label><input type="number" class="voto-input" id="accion_popular" value="0" min="0" required style="border-color: #d9534f; background: #fff;"></div>
-                </div>
-
-                <div class="form-group"><label>Frepap:</label><input type="number" class="voto-input" id="frepap" value="0" min="0" required></div>
-                <div class="form-group"><label>Partido Político Perú Primero:</label><input type="number" class="voto-input" id="peru_primero" value="0" min="0" required></div>
-                <div class="form-group"><label>Ahora Nación - AN:</label><input type="number" class="voto-input" id="ahora_nacion" value="0" min="0" required></div>
-                <div class="form-group"><label>Progresemos:</label><input type="number" class="voto-input" id="progresemos" value="0" min="0" required></div>
-                
-                <hr style="border:0; border-top:1px solid #ddd; margin:15px 0;">
-                <div class="form-group"><label>Votos en Blanco:</label><input type="number" class="voto-input" id="blancos" value="0" min="0" required></div>
-                <div class="form-group"><label>Votos Nulos:</label><input type="number" class="voto-input" id="nulos" value="0" min="0" required></div>
-
-                <button type="submit" id="btn-enviar">Registrar Mesa en la Nube</button>
-            </form>
+        <div class="card-mesas">
+            <span>Mesas Procesadas:</span>
+            <h3 id="lbl-mesas">0 / 41</h3>
         </div>
 
-        <!-- SECCIÓN 2: RESULTADOS Y GRÁFICO -->
-        <div id="tab-resultados" class="hidden">
-            <div class="stats-card">
-                <p style="margin:0; font-size:14px; color:#666;">Mesas Procesadas:</p>
-                <div class="stats-number" id="lbl-mesas">0 / 41</div>
-            </div>
-
-            <div style="position: relative; height:350px; width:100%;">
-                <canvas id="graficoVotos"></canvas>
-            </div>
-            
-            <button class="secondary-btn" onclick="cargarResultados()">🔄 Actualizar Datos</button>
+        <div style="width: 100%; height: 300px;">
+            <canvas id="graficoResultados"></canvas>
         </div>
 
+        <button class="btn-actualizar" onclick="cargarResultados()">🔄 Actualizar Datos</button>
     </div>
-</div>
 
-<script>
-    // CLAVE SECRETA CONFIGURADA
-    const CLAVE_SECRETA = "AP2026WALTICO"; 
-    
-    // URL DE TU APLICACIÓN WEB DE GOOGLE APPS SCRIPT
-    const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbm68kH3MacspRMJPwFCkl7bDK6fjmM1z1eqSOrUOEkVrZ-x_pjbd7Gv8KPz1UGxP6g/exec";
+    <script>
+        // PEGA AQUÍ TU NUEVA URL DE APPS SCRIPT
+        const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbm68kH3MacspRMJPwFCkl7bDK6fjmM1z1eqSOrUOEkVrZ-x_pjbd7Gv8KPz1UGxP6g/exec";
 
-    let miGrafico = null;
+        let miGrafico = null;
 
-    function verificarClave() {
-        const ingresada = document.getElementById('clave-ingreso').value;
-        if (ingresada === CLAVE_SECRETA) {
-            document.getElementById('login-screen').classList.add('hidden');
-            document.getElementById('main-panel').classList.remove('hidden');
-            inicializarGrafico();
-            cargarResultados();
-        } else {
-            document.getElementById('error-msg').innerText = "Clave incorrecta. Inténtalo de nuevo.";
-        }
-    }
-
-    function cambiarTab(tab) {
-        if(tab === 'registrar') {
-            document.getElementById('tab-registrar').classList.remove('hidden');
-            document.getElementById('tab-resultados').classList.add('hidden');
-            document.querySelectorAll('.tab-link')[0].classList.add('active');
-            document.querySelectorAll('.tab-link')[1].classList.remove('active');
-        } else {
-            document.getElementById('tab-registrar').classList.add('hidden');
-            document.getElementById('tab-resultados').classList.remove('hidden');
-            document.querySelectorAll('.tab-link')[0].classList.remove('active');
-            document.querySelectorAll('.tab-link')[1].classList.add('active');
-            cargarResultados();
-        }
-    }
-
-    function enviarDatos(event) {
-        event.preventDefault();
-        const btn = document.getElementById('btn-enviar');
-        btn.innerText = "Enviando...";
-        btn.disabled = true;
-
-        const datos = {
-            mesa: document.getElementById('mesa').value,
-            personero: document.getElementById('personero').value,
-            alianza: document.getElementById('alianza').value,
-            juntos: document.getElementById('juntos').value,
-            accion_popular: document.getElementById('accion_popular').value,
-            frepap: document.getElementById('frepap').value,
-            peru_primero: document.getElementById('peru_primero').value,
-            ahora_nacion: document.getElementById('ahora_nacion').value,
-            progresemos: document.getElementById('progresemos').value,
-            blancos: document.getElementById('blancos').value,
-            nulos: document.getElementById('nulos').value
-        };
-
-        fetch(URL_SCRIPT, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(datos)
-        }).then(() => {
-            alert("¡Mesa registrada con éxito!");
-            document.getElementById('votos-form').reset();
-            btn.innerText = "Registrar Mesa en la Nube";
-            btn.disabled = false;
-            cambiarTab('resultados');
-        }).catch(error => {
-            alert("Hubo un error al enviar. Revisa tu internet.");
-            btn.innerText = "Registrar Mesa en la Nube";
-            btn.disabled = false;
-        });
-    }
-
-    function inicializarGrafico() {
-        if (miGrafico) return;
-        const ctx = document.getElementById('graficoVotos').getContext('2d');
-        miGrafico = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Alianza P.', 'Juntos P.', 'Acción Popular', 'Frepap', 'Perú Primero', 'Ahora Nación', 'Progresemos'],
-                datasets: [{
-                    label: 'Total de Votos Acumulados',
-                    data: [0, 0, 0, 0, 0, 0, 0],
-                    backgroundColor: [
-                        '#003366', '#2e7d32', '#d9534f', '#0277bd', '#c62828', '#b71c1c', '#388e3c'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: { beginAtZero: true }
+        function inicializarGrafico() {
+            const ctx = document.getElementById('graficoResultados').getContext('2d');
+            miGrafico = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Alianza P.', 'Juntos P.', 'Acción Popular', 'Frepap', 'Perú Primero', 'Ahora Nación', 'Progresemos'],
+                    datasets: [{
+                        label: 'Total de Votos Acumulados',
+                        data: [0, 0, 0, 0, 0, 0, 0],
+                        backgroundColor: '#0a3663'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
                 }
+            });
+        }
+
+        function cargarResultados() {
+            const scriptId = 'jsonp-callback-script';
+            let oldScript = document.getElementById(scriptId);
+            if (oldScript) {
+                oldScript.remove();
             }
-        });
-    }
 
-    function cargarResultados() {
-        // Usamos corsproxy.io para saltar la restricción CORS de Google Sheets
-        const proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(URL_SCRIPT);
-
-        fetch(proxyUrl)
-            .then(res => res.json())
-            .then(data => {
+            window.procesarRespuestaAppsScript = function(data) {
                 let totales = [0, 0, 0, 0, 0, 0, 0];
                 let mesasRegistradas = data.length > 0 ? data.length - 1 : 0;
 
                 for(let i = 1; i < data.length; i++) {
-                    totales[0] += Number(data[i][2]) || 0; // Alianza
-                    totales[1] += Number(data[i][3]) || 0; // Juntos
+                    totales[0] += Number(data[i][2]) || 0; // Alianza P.
+                    totales[1] += Number(data[i][3]) || 0; // Juntos P.
                     totales[2] += Number(data[i][4]) || 0; // Acción Popular
                     totales[3] += Number(data[i][5]) || 0; // Frepap
                     totales[4] += Number(data[i][6]) || 0; // Perú Primero
@@ -229,12 +167,22 @@
                     miGrafico.data.datasets[0].data = totales;
                     miGrafico.update();
                 }
-            })
-            .catch(e => {
-                console.log("Error al cargar datos:", e);
-            });
-    }
-</script>
+            };
 
+            const script = document.createElement('script');
+            script.id = scriptId;
+            script.src = `${URL_SCRIPT}?callback=procesarRespuestaAppsScript`;
+            script.onerror = function() {
+                alert("Error al conectar con Google Sheets. Verifica la URL.");
+            };
+            document.body.appendChild(script);
+        }
+
+        // Cargar gráfico y datos al abrir la página
+        window.onload = function() {
+            inicializarGrafico();
+            cargarResultados();
+        };
+    </script>
 </body>
 </html>
