@@ -204,8 +204,8 @@
     }
 
     function cargarResultados() {
-        // Usamos un Proxy CORS público para evitar el bloqueo del navegador al leer Google Apps Script
-        const proxyUrl = "https://api.allorigins.win/raw?url=" + encodeURIComponent(URL_SCRIPT);
+        // Usamos corsproxy.io para saltar la restricción CORS de Google Sheets
+        const proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(URL_SCRIPT);
 
         fetch(proxyUrl)
             .then(res => res.json())
