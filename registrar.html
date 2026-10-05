@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Mesa - Conteo Rápido</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 450px;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #d9534f;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        p.sub {
+            text-align: center;
+            color: #555;
+            font-size: 14px;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        .nav-tabs {
+            display: flex;
+            justify-content: space-around;
+            border-bottom: 2px solid #ddd;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+        }
+        .nav-tabs a {
+            text-decoration: none;
+            color: #d9534f;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .nav-tabs a.active {
+            border-bottom: 3px solid #d9534f;
+            padding-bottom: 7px;
+        }
+        .form-group {
+            margin-bottom: 12px;
+        }
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 4px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .btn-enviar {
+            width: 100%;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+        .btn-enviar:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>ACCIÓN POPULAR</h2>
+        <p class="sub">Sistema de Conteo Rápido - Municipal</p>
+
+        <div class="nav-tabs">
+            <a href="#" class="active">📝 Registrar Mesa</a>
+            <a href="index.html">📊 Ver Resultados y Gráfico</a>
+        </div>
+
+        <form id="formMesa" onsubmit="enviarMesa(event)">
+            <div class="form-group">
+                <label>Número de Mesa:</label>
+                <input type="text" id="mesa" required placeholder="Ej. 001234">
+            </div>
+            <div class="form-group">
+                <label>Nombre del Personero:</label>
+                <input type="text" id="personero" required placeholder="Nombre completo">
+            </div>
+            <div class="form-group">
+                <label>Alianza P.:</label>
+                <input type="number" id="alianza" min="0" value="0" required>
+            </div>
+            <div class="form-group">
+                <label>Juntos P.:</label>
+                <input type="number" id="juntos" min="0" value="0" required>
+            </div>
+            <div class="form-group">
+                <label>Acción Popular:</label>
+                <input type="number" id="accion_popular" min="0" value="0" required>
+            </div>
+            <div class="form-group">
+                <label>Frepap:</label>
+                <input type="number" id="frepap" min="0" value="0" required>
+            </div>
+            <div class="form-group">
+                <label>Perú Primero:</label>
+                <input type="number" id="peru_primero" min="0" value="0" required>
+            </div>
+            <div class="form-group">
+                <label>Ahora Nación:</label>
+                <input type="number" id="ahora_nacion" min="0" value="0" required>
+            </div>
+            <div class="form-group">
+                <label>Progresemos:</label>
+                <input type="number" id="progresemos" min="0" value="0" required>
+            </div>
+            <div class="form-group">
+                <label>Votos Blancos:</label>
+                <input type="number" id="blancos" min="0" value="0" required>
+            </div>
+            <div class="form-group">
+                <label>Votos Nulos:</label>
+                <input type="number" id="nulos" min="0" value="0" required>
+            </div>
+
+            <button type="submit" class="btn-enviar" id="btnSubmit">💾 Guardar Mesa</button>
+        </form>
+    </div>
+
+    <script>
+        // Tu misma URL de Google Apps Script
+        const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbzj8FmPa816-AWjVb5cTpgtPtAmqnZekCWT3mg08XUpE_JFZ_8_SUbdMfbC4ryoDjc4aQ/exec";
+
+        function enviarMesa(event) {
+            event.preventDefault();
+            
+            const btn = document.getElementById('btnSubmit');
+            btn.innerText = "Guardando...";
+            btn.disabled = true;
+
+            const datos = {
+                mesa: document.getElementById('mesa').value,
+                personero: document.getElementById('personero').value,
+                alianza: document.getElementById('alianza').value,
+                juntos: document.getElementById('juntos').value,
+                accion_popular: document.getElementById('accion_popular').value,
+                frepap: document.getElementById('frepap').value,
+                peru_primero: document.getElementById('peru_primero').value,
+                ahora_nacion: document.getElementById('ahora_nacion').value,
+                progresemos: document.getElementById('progresemos').value,
+                blancos: document.getElementById('blancos').value,
+                nulos: document.getElementById('nulos').value
+            };
+
+            fetch(URL_SCRIPT, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'text/plain;charset=utf-8'
+                },
+                body: JSON.stringify(datos)
+            })
+            .then(() => {
+                alert("¡Mesa registrada con éxito!");
+                document.getElementById('formMesa').reset();
+                btn.innerText = "💾 Guardar Mesa";
+                btn.disabled = false;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("Hubo un error al registrar la mesa.");
+                btn.innerText = "💾 Guardar Mesa";
+                btn.disabled = false;
+            });
+        }
+    </script>
+</body>
+</html>
