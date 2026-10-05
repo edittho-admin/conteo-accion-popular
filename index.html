@@ -111,8 +111,9 @@
     </div>
 
     <script>
-        // PEGA AQUÍ TU NUEVA URL DE APPS SCRIPT
-        const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbwr4v-UPHo_e0-PWKui5vycRmOJaCOld0WPnrgja9ZHn8zDxR8dsbIRRdiWcXvA6g5SPg/exec";
+        // URL de Apps Script actualizada
+        const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbzj8FmPa816-AWjVb5cTpgtPtAmqnZekCWT3mg08XUpE_JFZ_8_SUbdMfbC4ryoDjc4aQ/exec";
+
         let miGrafico = null;
 
         function inicializarGrafico() {
@@ -177,7 +178,7 @@
             document.body.appendChild(script);
         }
 
-        // Cargar gráfico y datos al abrir la página
+        // Cargar gráfico y datos automáticamente al abrir la página
         window.onload = function() {
             inicializarGrafico();
             cargarResultados();
