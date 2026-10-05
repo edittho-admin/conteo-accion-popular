@@ -204,8 +204,10 @@
     }
 
     function cargarResultados() {
-        // Usamos redirect: 'follow' para evitar el bloqueo del fetch con Google Apps Script
-        fetch(URL_SCRIPT, { redirect: 'follow' })
+        // Usamos un Proxy CORS público para evitar el bloqueo del navegador al leer Google Apps Script
+        const proxyUrl = "https://api.allorigins.win/raw?url=" + encodeURIComponent(URL_SCRIPT);
+
+        fetch(proxyUrl)
             .then(res => res.json())
             .then(data => {
                 let totales = [0, 0, 0, 0, 0, 0, 0];
